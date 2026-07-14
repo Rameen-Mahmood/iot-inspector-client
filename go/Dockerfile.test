@@ -1,0 +1,9 @@
+FROM golang:1.22-bookworm
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      libpcap-dev iproute2 curl iputils-ping ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+WORKDIR /src
+COPY . .
+RUN go mod tidy && go build -o /usr/local/bin/inspector ./cmd/inspector
+WORKDIR /work
+CMD ["sleep", "infinity"]
